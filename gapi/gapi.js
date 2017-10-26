@@ -6,8 +6,7 @@ var googleAuth = require('google-auth-library');
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/sheets.googleapis.com-nodejs-quickstart.json
 var SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
-var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
-  process.env.USERPROFILE) + '/.credentials/';
+var TOKEN_DIR = '/.credentials/';
 var TOKEN_PATH = TOKEN_DIR + 'sheets.googleapis.com-nodejs-quickstart.json';
 
 let auth;
@@ -80,12 +79,27 @@ async function updateNextRow(values) {
   return await updateDocument('1QRxPRMHGseNTW24QJRgp3oD6E2BqkmanRvuHTdqqwfE', `HSB!A${nextEmptyRow}:E`, 'USER_ENTERED', body);
 }
 
+async function getStatus() {
+  let readOffset = 1;
+  let res = await getDocument('1QRxPRMHGseNTW24QJRgp3oD6E2BqkmanRvuHTdqqwfE', `HSB!A${1 + readOffset}:O`);
+  let lastEntered = res.filter(row => row[0]).length;
+  let latest = res[lastEntered - readOffset]
+  let firstInMonth = res.find(row => {
+    let thisDate = new Date(row[0]);
+    let latestDate = new Date(latest[0]);
+    return thisDate.getYear() === latestDate.getYear()
+      && thisDate.getMonth() === latestDate.getMonth()
+
+  })
+  return {
+    latest,
+    prev: res[lastEntered - readOffset - 1],
+    firstInMonth
+  }
+}
+
 module.exports = {
   init: authorize,
-  update: values => new Promise((res, rej) => {
-    authorize().then(
-      auth => updateNextRow(values).then(res, rej),
-      err => rej('Auth failed', err)
-    );
-  }),
+  update: values => new Promise((res, rej) => updateNextRow(values).then(res, rej)),
+  getStatus
 } 
