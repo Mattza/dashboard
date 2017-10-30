@@ -31,7 +31,7 @@ function authorize() {
           rej(err)
         } else {
           oauth2Client.credentials = JSON.parse(token);
-          auth = oauth2Client
+          auth = oauth2Client;
           res();
         }
       });

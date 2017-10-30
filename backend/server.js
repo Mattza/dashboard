@@ -22,12 +22,16 @@ console.log(`Startad på port: ${port}`);
 let getAmountFromDataWithType = data => type => data.find(item => item.type === type).amount;
 let getTotala = obj => parseInt(obj[11].replace(/,/g, ''), 10);
 app.get('/cash', async function (req, res) {
-  console.log('taco')
-  await init()
-  const status = getStatus();
-  console.log(`Du har nu:\t\t\t\t\t ${getTotala(status.latest)}`);
+  await init();
+  const status = await getStatus();
+  console.log(`Du har nu:\t\t\t\t\t `);
   console.log(`Förändring sen förra gången ${status.prev[0]}: \t ${getTotala(status.latest) - getTotala(status.prev)} `);
   console.log(`Förändring sen denna månaden \t\t\t ${getTotala(status.latest) - getTotala(status.firstInMonth)} `);
+  res.send({
+    latest: { amount: getTotala(status.latest) },
+    prev: { amount: getTotala(status.latest) - getTotala(status.prev),date: status.prev[0]},
+    month: { amount: getTotala(status.latest) - getTotala(status.firstInMonth),date: status.firstInMonth[0]},
+  })
 })
 // getDataz().then(dataz => {
 //   const getAmountFromType = getAmountFromDataWithType(dataz);
