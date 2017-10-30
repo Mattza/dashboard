@@ -13,7 +13,7 @@ let auth;
 
 function authorize() {
   return new Promise((res, rej) => {
-    fs.readFile('gapi/client_secret.json', function processClientSecrets(err, content) {
+    fs.readFile('backend/gapi/client_secret.json', function processClientSecrets(err, content) {
       if (err) {
         rej(err);
         return

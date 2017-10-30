@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "update-headless": "node backend/updateHeadless",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
