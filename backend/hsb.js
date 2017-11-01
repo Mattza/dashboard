@@ -37,8 +37,16 @@ async function getDataz() {
             }
         }).get();
         // let pluses = dataz.filter(item => item.type !== 'Lån').reduce((acc, item) => acc + item.amount, 0);
-        
-        return dataz;
+        let getAmountFromDataWithType = data => type => data.find(item => item.type === type).amount;
+        const getAmountFromType = getAmountFromDataWithType(dataz);
+        let values = [
+            new Date().toISOString().split('T')[0],
+            getAmountFromType('Konton'),
+            getAmountFromType('Fonder'),
+            getAmountFromType('Investeringsspar'),
+            getAmountFromType('Pension')
+        ];
+        return values;
     } catch (e) {
         console.log('there was an error');
         console.log(e);

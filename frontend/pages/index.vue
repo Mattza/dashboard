@@ -1,27 +1,32 @@
 <template>
   <section class="container">
     <div>
-      <logo/>
+     
       <h1 class="title">
         frontend
       </h1>
-      <h2 class="subtitle">
-        The dashboard of the dashboard
+      <h2 class="subtitle" v-if="cash.latest">
+        Latest: {{cash.latest.amount}}
+        Prev: {{cash.prev.amount}}
+        Month: {{cash.month.amount}}
       </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
-      </div>
+      <button @click="$store.dispatch('updateCash')">Update</button>
     </div>
   </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import { mapState } from 'vuex'
 
 export default {
-  components: {
-    Logo
+  components: {},
+  computed: {
+    ...mapState([
+      'cash'
+    ])
+  },
+  beforeMount: function () {
+    this.$store.dispatch('getCash')
   }
 }
 </script>
