@@ -9,9 +9,9 @@
         Latest: {{cash.latest.amount}} Prev: {{cash.prev.amount}} Month: {{cash.month.amount}}
       </h2>
       <button @click="$store.dispatch('updateCash')">Update</button>
-
+      <chart-doughnut :data="lineData" :options="options"></chart-doughnut>
     </div>
-    <chart-doughnut :data="lineData" :options="options"></chart-doughnut>
+
   </section>
 </template>
 

@@ -28,3 +28,14 @@ app.get('/api/cash/update', async function (req, res) {
   await init();
   res.send(await update(await values));
 });
+
+
+var WebSocketServer = require('ws').Server
+, wss = new WebSocketServer({port: 8080});
+wss.on('connection', function(ws) {
+  ws.on('message', function(message) {
+      console.log('received: %s', message);
+      ws.send('tyst!');
+  });
+  ws.send('something');
+});

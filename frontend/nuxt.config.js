@@ -32,19 +32,19 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/,
           options: {
-            fix: true,
+            fix: true
           }
         })
       }
     }
   },
   modules: [
-    '@nuxtjs/proxy',
+    '@nuxtjs/proxy'
   ],
   plugins: [
-    { src: '~plugins/vue-chartjs.js', ssr: false },
+    { src: '~plugins/vue-chartjs.js', ssr: false }
   ],
   proxy: {
-      '/api': 'http://localhost:8092/api',
+    '/api': 'http://localhost:8092'
   }
 }
