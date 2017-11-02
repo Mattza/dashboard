@@ -1,17 +1,17 @@
 <template>
   <section class="container">
     <div>
-     
+
       <h1 class="title">
         frontend
       </h1>
       <h2 class="subtitle" v-if="cash.latest">
-        Latest: {{cash.latest.amount}}
-        Prev: {{cash.prev.amount}}
-        Month: {{cash.month.amount}}
+        Latest: {{cash.latest.amount}} Prev: {{cash.prev.amount}} Month: {{cash.month.amount}}
       </h2>
       <button @click="$store.dispatch('updateCash')">Update</button>
+
     </div>
+    <chart-doughnut :data="lineData" :options="options"></chart-doughnut>
   </section>
 </template>
 
@@ -19,6 +19,21 @@
 import { mapState } from 'vuex'
 
 export default {
+  data () {
+    return {
+      lineData: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [40, 39, 10, 40, 39, 80, 40]
+          }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    }
+  },
   components: {},
   computed: {
     ...mapState([
@@ -41,7 +56,8 @@ export default {
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* 1 */
   display: block;
   font-weight: 300;
   font-size: 100px;

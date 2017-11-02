@@ -37,5 +37,14 @@ module.exports = {
         })
       }
     }
+  },
+  modules: [
+    '@nuxtjs/proxy',
+  ],
+  plugins: [
+    { src: '~plugins/vue-chartjs.js', ssr: false },
+  ],
+  proxy: {
+      '/api': 'http://localhost:8092/api',
   }
 }

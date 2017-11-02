@@ -11,12 +11,12 @@ const createStore = () => {
       }
     },
     actions: {
-      async getCash ({commit, state}, year) {
+      async getCash ({commit, state}) {
         let cash = await (await fetch('http://localhost:8092/api/cash')).json()
         commit('setCash', cash)
       },
       async updateCash ({dispatch, state}, param) {
-        let cash = await (await fetch('http://localhost:8092/api/cash/update')).json()
+        await (await fetch('http://localhost:8092/api/cash/update')).json()
         dispatch('getCash')
       }
     }

@@ -26,10 +26,10 @@ async function getNextEmptyRow() {
   return lastEntered + readOffset + (sameDateAsLastRow ? 0 : 1);
 }
 
-async function update(values) {
+async function update(params) {
   let nextEmptyRow = await getNextEmptyRow();
   let resource = {
-    values: [values]
+    values: [params]
   }
   return await gapiUpdate({ auth, spreadsheetId, range: `HSB!A${nextEmptyRow}:E`, valueInputOption, resource });
 }
