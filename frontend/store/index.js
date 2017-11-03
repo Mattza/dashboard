@@ -26,6 +26,7 @@ const createStore = () => {
           baseDataset('Year', [cashObj.latest.amount - 5000000, 5500000 - cashObj.latest.amount])
         ]
       }
+
     },
     actions: {
       async getCash ({ commit, state }) {
@@ -35,7 +36,11 @@ const createStore = () => {
       async updateCash ({ dispatch, state }, param) {
         await (await fetch('/api/cash/update')).json()
         dispatch('getCash')
+      },
+      socket ({ dispatch, state }, msg) {
+        console.log(msg)
       }
+
     }
   })
 }

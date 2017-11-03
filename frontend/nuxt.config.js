@@ -42,9 +42,12 @@ module.exports = {
     '@nuxtjs/proxy'
   ],
   plugins: [
-    { src: '~plugins/vue-chartjs.js', ssr: false }
+    { src: '~plugins/vue-chartjs.js', ssr: false },
+    { src: '~plugins/websockets.js', ssr: false }
   ],
   proxy: {
-    '/api': 'http://localhost:8092'
+    '/api': 'http://localhost:8092',
+    '/socket': 'http://localhost:8093'
   }
 }
+
