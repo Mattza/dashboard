@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "update-headless": "node backend/updateHeadless",
+    "backend": "nodemon backend/server",
+    "dev": "concurrently --kill-others-on-fail -c \"cyan,magenta\" \"npm run backend\"  \"cd frontend && npm run dev\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "concurrently": "3.5.0",
     "express": "^4.16.2",
     "google-auth-library": "^0.11.0",
     "googleapis": "^22.2.0",

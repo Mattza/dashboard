@@ -31,7 +31,7 @@ app.get('/api/cash/update', async function (req, res) {
 
 
 var WebSocketServer = require('ws').Server
-, wss = new WebSocketServer({port: 8080});
+, wss = new WebSocketServer({port: 8093});
 wss.on('connection', function(ws) {
   ws.on('message', function(message) {
       console.log('received: %s', message);
