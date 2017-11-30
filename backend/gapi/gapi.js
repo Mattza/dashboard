@@ -9,6 +9,7 @@ const readFile = util.promisify(fs.readFile);
 let auth;
 let spreadsheetId = '1QRxPRMHGseNTW24QJRgp3oD6E2BqkmanRvuHTdqqwfE';
 let valueInputOption = 'USER_ENTERED';
+let readOffset = 1;
 
 async function init() {
   const content = await readFile('backend/gapi/client_secret.json');
@@ -19,7 +20,6 @@ async function init() {
 }
 
 async function getNextEmptyRow() {
-  let readOffset = 1;
   let { values: res } = await gapiGet({ auth, spreadsheetId, range: `HSB!A${1 + readOffset}:E` });
   let lastEntered = res.filter(row => row[0]).length;
   let sameDateAsLastRow = res[lastEntered - readOffset][0] === new Date().toISOString().split('T')[0];
@@ -34,25 +34,19 @@ async function update(params) {
   let laan = await gapiUpdate({ auth, spreadsheetId, range: `HSB!P${nextEmptyRow}:P`, valueInputOption, resource })
 }
 
+const coolStrDateToYearMonth = ([date]) => date.split('-').slice(0, 2).join('-')
+const getTotalaAsInt = obj => parseInt(obj[11].replace(/,/g, ''), 10)
 async function getStatus() {
-  let readOffset = 1;
   let { values: res } = await gapiGet({ auth, spreadsheetId, range: `HSB!A${1 + readOffset}:O` });
-  let lastEntered = res.filter(row => row[0]).length;
-  let latest = res[lastEntered - readOffset];
-  let prev = res[lastEntered - readOffset - 1];
-  let firstInMonth = res.find(row => {
-    let thisDate = new Date(row[0]);
-    let latestDate = new Date(latest[0]);
-    return thisDate.getYear() === latestDate.getYear()
-      && thisDate.getMonth() === latestDate.getMonth()
-  })
-
-  let getTotalaAsInt = obj => parseInt(obj[11].replace(/,/g, ''), 10);
-
+  let lastEntered = res.filter(row => row[0]).length - readOffset;
+  let latest = res[lastEntered];
+  let latestAmount = getTotalaAsInt(latest)
+  let prev = res[lastEntered - 1];
+  let firstInMonth = res.find(thisRow => coolStrDateToYearMonth(thisRow) === coolStrDateToYearMonth(latest))
   return {
-    latest: { amount: getTotalaAsInt(latest) },
-    prev: { amount: getTotalaAsInt(latest) - getTotalaAsInt(prev), date: prev[0] },
-    month: { amount: getTotalaAsInt(latest) - getTotalaAsInt(firstInMonth), date: firstInMonth[0] },
+    latest: { amount: latestAmount },
+    prev: { amount: latestAmount - getTotalaAsInt(prev), date: prev[0] },
+    month: { amount: latestAmount - getTotalaAsInt(firstInMonth), date: firstInMonth[0] },
   };
 }
 
