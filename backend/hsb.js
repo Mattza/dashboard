@@ -44,7 +44,8 @@ async function getDataz() {
             getAmountFromType('Konton'),
             getAmountFromType('Fonder'),
             getAmountFromType('Investeringsspar'),
-            getAmountFromType('Pension')
+            getAmountFromType('Pension'),
+            getAmountFromType('Lån')
         ];
         return values;
     } catch (e) {

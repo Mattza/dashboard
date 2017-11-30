@@ -28,10 +28,10 @@ async function getNextEmptyRow() {
 
 async function update(params) {
   let nextEmptyRow = await getNextEmptyRow();
-  let resource = {
-    values: [params]
-  }
-  return await gapiUpdate({ auth, spreadsheetId, range: `HSB!A${nextEmptyRow}:E`, valueInputOption, resource });
+  let resource = { values: [params.slice(0, 5)] }
+  let plus = await gapiUpdate({ auth, spreadsheetId, range: `HSB!A${nextEmptyRow}:E`, valueInputOption, resource })
+  resource.values = [params.slice(-1)]
+  let laan = await gapiUpdate({ auth, spreadsheetId, range: `HSB!P${nextEmptyRow}:P`, valueInputOption, resource })
 }
 
 async function getStatus() {
