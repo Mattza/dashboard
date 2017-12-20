@@ -1,6 +1,7 @@
 <template>
   <section class="container">
     <h1 class="title">ca$h</h1>
+    <h2 v-if="updating">Uppdaterar</h2>
     <div class="text-wrapper">
       <h2 class="subtitle" v-if="cash.latest">
         Latest: {{cash.latest.amount}}
@@ -40,7 +41,8 @@ export default {
   computed: {
     ...mapState([
       'cash',
-      'chartDatas'
+      'chartDatas',
+      'updating'
     ])
   },
   beforeMount: function () {
