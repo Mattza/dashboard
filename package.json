@@ -7,7 +7,9 @@
     "update-headless": "node backend/updateHeadless",
     "backend": "nodemon backend/server",
     "dev": "concurrently --kill-others-on-fail -c \"cyan,magenta\" \"npm run backend\"  \"cd frontend && npm run dev\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently --kill-others-on-fail -c \"cyan,magenta\" \"npm run backend\"  \"cd frontend && npm run build && npm run start\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "singlerun": "node backend/singlerun"
   },
   "author": "",
   "license": "ISC",

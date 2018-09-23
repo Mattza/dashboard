@@ -35,9 +35,11 @@ async function update(params) {
 }
 
 const coolStrDateToYearMonth = ([date]) => date.split('-').slice(0, 2).join('-')
-const getTotalaAsInt = obj => parseInt(obj[11].replace(/,/g, ''), 10)
+const getTotalaAsInt = obj => parseInt(obj[11].replace(/,/g, ''), 10);
+const getGoalAsInt = obj => parseInt(obj[17].replace(/,/g, ''), 10);
+
 async function getStatus() {
-  let { values: res } = await gapiGet({ auth, spreadsheetId, range: `HSB!A${1 + readOffset}:O` });
+  let { values: res } = await gapiGet({ auth, spreadsheetId, range: `HSB!A${1 + readOffset}:R` });
   let lastEntered = res.filter(row => row[0]).length - readOffset;
   let latest = res[lastEntered];
   let latestAmount = getTotalaAsInt(latest)
@@ -47,6 +49,7 @@ async function getStatus() {
     latest: { amount: latestAmount },
     prev: { amount: latestAmount - getTotalaAsInt(prev), date: prev[0] },
     month: { amount: latestAmount - getTotalaAsInt(firstInMonth), date: firstInMonth[0] },
+    goal: {amount: getGoalAsInt(latest)}
   };
 }
 
